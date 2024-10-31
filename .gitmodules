@@ -1,0 +1,3 @@
+[submodule "hardware/RP2350-KiCad"]
+	path = hardware/RP2350-KiCad
+	url = git@github.com:HDR/RP2350_KiCad.git
