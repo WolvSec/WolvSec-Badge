@@ -1,69 +1,48 @@
-# Generated Cmake Pico project file
-
 cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Initialise pico_sdk from installed location
-# (note this can come from environment, CMake cache etc)
+set(PICO_BOARD pico2)
 
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.1.0)
-set(toolchainVersion 13_3_Rel1)
-set(picotoolVersion 2.1.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-set(PICO_BOARD pico2 CACHE STRING "Board type")
-
-# Pull in Raspberry Pi Pico SDK (must be before project)
+# pico-sdk
+set(PICO_SDK_FETCH_FROM_GIT on)
+set(PICO_SDK_GIT_TAG 2.1.1)
 include(pico_sdk_import.cmake)
 
-# Add LVGL library path
-set(LVGL_DIR "${CMAKE_SOURCE_DIR}/lvgl")
-
-project(wolvsec_badge C CXX ASM)
-
-# Initialise the Raspberry Pi Pico SDK
+project(wolvsec_badge C ASM CXX)
+enable_language(CXX)
 pico_sdk_init()
 
-# Add executable. Default name is the project name, version 0.1
 add_executable(wolvsec_badge
     wolvsec_badge.c
     lcd_impl.c
-    )
+    lvgl/src/drivers/display/st7789/lv_st7789.c
+)
 
-# pull in common dependencies
-target_link_libraries(wolvsec_badge pico_stdlib hardware_spi hardware_dma)
+target_include_directories(wolvsec_badge PRIVATE
+    ${CMAKE_SOURCE_DIR}
+    lvgl
+    lvgl/src/drivers/display
+)
 
-# enable usb output, disable uart output
+target_compile_definitions(wolvsec_badge PRIVATE LV_CONF_PATH="${CMAKE_SOURCE_DIR}/lv_conf.h")
+
+add_subdirectory(lvgl lvgl_build)
+target_link_libraries(wolvsec_badge
+    pico_stdlib
+    hardware_spi
+    hardware_dma
+    lvgl
+)
+
+# Enable USB stdio for debugging, disable UART stdio
 pico_enable_stdio_usb(wolvsec_badge 1)
 pico_enable_stdio_uart(wolvsec_badge 0)
-
-# LVGL lib
-target_include_directories(wolvsec_badge PRIVATE ${CMAKE_SOURCE_DIR})
-target_sources(wolvsec_badge PRIVATE ${LVGL_DIR}/src/drivers/display/st7789/lv_st7789.c)
-target_include_directories(wolvsec_badge PRIVATE ${LVGL_DIR}/src/drivers/display)
-add_compile_definitions(LV_CONF_PATH="${CMAKE_SOURCE_DIR}/lv_conf.h") # because lvgl could not find lv_conf for some reason
-
-
-target_include_directories(wolvsec_badge PRIVATE ${LVGL_DIR})
-add_subdirectory(${LVGL_DIR} lvgl_build)
-target_link_libraries(wolvsec_badge lvgl)
 
 if (PICO_CYW43_SUPPORTED)
     target_link_libraries(wolvsec_badge pico_cyw43_arch_none)
 endif()
 
-# create map/bin/hex file etc.
 pico_add_extra_outputs(wolvsec_badge)
-
