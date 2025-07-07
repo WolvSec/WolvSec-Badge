@@ -1,6 +1,9 @@
 [submodule "hardware/RP2350-KiCad"]
 	path = hardware/RP2350-KiCad
 	url = git@github.com:HDR/RP2350_KiCad.git
-[submodule "lvgl"]
-	path = lvgl
+[submodule "ext/pico-sdk"]
+	path = ext/pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk.git
+[submodule "ext/lvgl"]
+	path = ext/lvgl
 	url = https://github.com/lvgl/lvgl.git
