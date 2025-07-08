@@ -7,7 +7,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(PICO_BOARD pico2)
 
 # pico-sdk
-set(PICO_SDK_FETCH_FROM_GIT on)
 set(PICO_SDK_GIT_TAG 2.1.1)
 include(pico_sdk_import.cmake)
 
@@ -16,20 +15,23 @@ enable_language(CXX)
 pico_sdk_init()
 
 add_executable(wolvsec_badge
-    wolvsec_badge.c
-    lcd_impl.c
-    lvgl/src/drivers/display/st7789/lv_st7789.c
+    src/wolvsec_badge.c
+    src/lcd_impl.c
+    ext/lvgl/src/drivers/display/st7789/lv_st7789.c
 )
 
 target_include_directories(wolvsec_badge PRIVATE
-    ${CMAKE_SOURCE_DIR}
-    lvgl
-    lvgl/src/drivers/display
+    include
+    ext/lvgl
+    ext/lvgl/src/drivers/display
 )
 
-target_compile_definitions(wolvsec_badge PRIVATE LV_CONF_PATH="${CMAKE_SOURCE_DIR}/lv_conf.h")
-
-add_subdirectory(lvgl lvgl_build)
+# Disable LVGL demos/examples
+set(CONFIG_LV_BUILD_DEMOS OFF)
+set(CONFIG_LV_BUILD_EXAMPLES OFF)
+set(CONFIG_LV_USE_THORVG_INTERNAL OFF)
+set(LV_CONF_PATH "${CMAKE_SOURCE_DIR}/include/lv_conf.h")
+add_subdirectory(ext/lvgl lvgl_build)
 target_link_libraries(wolvsec_badge
     pico_stdlib
     hardware_spi
