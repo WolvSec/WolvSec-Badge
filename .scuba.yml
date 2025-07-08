@@ -1,0 +1,6 @@
+image: wolvsec-badge
+docker_args: -w /home/badge
+volumes:
+  /home/badge: ./
+aliases:
+  build: mkdir -p build && cd build && cmake -DPICO_SDK_PATH=../ext/pico-sdk ../ && make
