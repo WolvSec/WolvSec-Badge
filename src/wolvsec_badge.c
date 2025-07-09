@@ -60,14 +60,15 @@ void ui_init(lv_display_t *disp)
 
 int pico_display_init(void) {
     lv_init();
-    lcd_spi_init();
+    lcd_init();
     add_repeating_timer_ms(5, repeating_lvgl_timer_callback, NULL, &lvgl_timer);
-    lcd = lv_st7789_create(LCD_RES_X, LCD_RES_Y, 0, (lv_st7789_send_cmd_cb_t) my_lcd_send_cmd, (lv_st7789_send_color_cb_t) my_lcd_send_color_dma);
+    lcd = lv_st7789_create(LCD_RES_X, LCD_RES_Y, 0, (lv_st7789_send_cmd_cb_t) lcd_send_cmd, (lv_st7789_send_color_cb_t) lcd_send_color_dma);
+    lcd_dma_init(lcd);
     if (!lcd) {
         printf("lv_st7789_create failed with code: %d\n", lcd);
         return -1;
     }
-    lcd_set_ctx(lcd);
+    //lcd_init(lcd);
     buf_size = LCD_RES_X * LCD_RES_Y / 10 * lv_color_format_get_size(lv_display_get_color_format(lcd));
     buf1 = lv_malloc(buf_size);
     if(buf1 == NULL) {
@@ -83,7 +84,6 @@ int pico_display_init(void) {
     }
     lv_display_set_buffers(lcd, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_st7789_set_invert(lcd, 1);
-    //  ui_init(lcd);
     ui_logo_init();
     return PICO_OK;
 }
