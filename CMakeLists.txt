@@ -11,13 +11,15 @@ set(PICO_SDK_GIT_TAG 2.1.1)
 include(pico_sdk_import.cmake)
 
 project(wolvsec_badge C ASM CXX)
+
 enable_language(CXX)
 pico_sdk_init()
 
 add_executable(wolvsec_badge
-    src/wolvsec_badge.c
-    src/lcd_impl.c
-    ext/lvgl/src/drivers/display/st7789/lv_st7789.c
+    src/main.c
+    src/lcd_driver.c
+    src/lcd_hal.c
+    src/ui.c
 )
 
 target_include_directories(wolvsec_badge PRIVATE
