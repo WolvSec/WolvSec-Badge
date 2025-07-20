@@ -6,6 +6,7 @@
 #include "lcd_driver.h"
 #include "pico/stdlib.h"
 #include "ui.h"
+#include "input.h"
 #include <stdio.h> /* For debug */
 
 // Pico W devices use a GPIO on the WIFI chip for the LED,
@@ -48,7 +49,9 @@ int main() {
   lv_init();
 
   lcd_driver_init(&lcd);
+  inputs_init();
   ui_display_cat();
+  // ui_lv_example_get_started_2();
 
   while (true) {
     lv_timer_handler();
