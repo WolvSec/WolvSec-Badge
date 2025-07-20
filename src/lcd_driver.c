@@ -58,6 +58,7 @@ int lcd_driver_init(lcd_driver_t *driver) {
   lv_display_set_buffers(driver->disp, driver->buf1, driver->buf2, buf_size,
                          LV_DISPLAY_RENDER_MODE_PARTIAL);
   lv_st7789_set_invert(driver->disp, 1);
+  lv_obj_clean(lv_screen_active());
   return 0;
 }
 

@@ -14,7 +14,7 @@
 #define LCD_PIN_DC 6
 
 #define SPI_PORT spi0
-#define LCD_SPI_SPEED 1000000
+#define LCD_SPI_SPEED 25000000
 
 static int dma_chan;
 static dma_channel_config dma_cfg;
