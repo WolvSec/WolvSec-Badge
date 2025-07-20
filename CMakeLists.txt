@@ -20,6 +20,7 @@ add_executable(wolvsec_badge
     src/lcd_driver.c
     src/lcd_hal.c
     src/ui.c
+    src/input.c
 )
 
 target_include_directories(wolvsec_badge PRIVATE
@@ -29,9 +30,9 @@ target_include_directories(wolvsec_badge PRIVATE
 )
 
 # Disable LVGL demos/examples
-set(CONFIG_LV_BUILD_DEMOS OFF)
-set(CONFIG_LV_BUILD_EXAMPLES OFF)
-set(CONFIG_LV_USE_THORVG_INTERNAL OFF)
+set(LV_BUILD_DEMOS OFF)
+set(LV_BUILD_EXAMPLES OFF)
+set(LV_USE_THORVG_INTERNAL OFF)
 set(LV_CONF_PATH "${CMAKE_SOURCE_DIR}/include/lv_conf.h")
 add_subdirectory(ext/lvgl lvgl_build)
 target_link_libraries(wolvsec_badge
