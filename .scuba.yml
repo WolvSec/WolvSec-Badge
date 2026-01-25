@@ -8,4 +8,4 @@ aliases:
       - mkdir -p build
       - cd build
       - cmake -DPICO_SDK_PATH=../ext/pico-sdk ../
-      - make
+      - make -j $(nproc)
