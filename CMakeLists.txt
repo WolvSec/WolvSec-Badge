@@ -20,7 +20,7 @@ add_executable(wolvsec_badge
     src/lcd_driver.c
     src/lcd_hal.c
     src/ui.c
-    src/input.c
+    src/dotgame.c
 )
 
 target_include_directories(wolvsec_badge PRIVATE

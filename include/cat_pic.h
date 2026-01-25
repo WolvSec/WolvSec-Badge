@@ -1,3 +1,6 @@
+#ifndef CAT_PIC_H
+#define CAT_PIC_H
+
 #ifdef __has_include
 #if __has_include("lvgl.h")
 #ifndef LV_LVGL_H_INCLUDE_SIMPLE
@@ -9632,3 +9635,5 @@ const lv_image_dsc_t cat_img = {
     .data_size = 57600 * 2,
     .data = cat_1_optimized_map,
 };
+
+#endif
