@@ -3,14 +3,14 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+#include "dotgame.h"
 #include "lcd_driver.h"
 #include "pico/stdlib.h"
 #include "ui.h"
-#include "input.h"
 #include <stdio.h> /* For debug */
 
 #ifndef LIB_PICO_STDIO_USB
-    #error USB output will not work! Ensure you have initialized all submodules for pico-sdk to enable tinyusb support.
+#error USB output will not work! Ensure you have initialized all submodules for pico-sdk to enable tinyusb support.
 #endif
 
 // Pico W devices use a GPIO on the WIFI chip for the LED,
@@ -50,12 +50,12 @@ lcd_driver_t lcd;
 
 int main() {
   stdio_init_all();
+  printf("Initializing LVGL");
   lv_init();
-
   lcd_driver_init(&lcd);
-  inputs_init();
   ui_display_cat();
-  // ui_lv_example_get_started_2();
+
+  // dotgame_inputs_init();
 
   while (true) {
     lv_timer_handler();
